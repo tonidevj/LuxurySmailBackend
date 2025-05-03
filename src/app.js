@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dontev from "dotenv";
-import userRoutes from "./controllers/admins.js";
+import userRoutes from "../src/routes/user.routes.js";
 
 dontev.config(); //carga variables de entorno 
 

@@ -4,7 +4,7 @@ dotenv.config(); //con esto leeremos las variables de entornos para usarla de ma
 
 const NODE_ENV = process.env.NODE_ENV || 'development'; //para detectar el entorno de ejecucion (desarrollo o produccion).
 
-//el puerto donde arrancará el servidor n producción, suele venir inyectado
+//el puerto donde arrancara el servidor n produccion, suele venir inyectado
 //por la plataforma (Heroku, Railway…).
 //Como estamos en desarrollo, usamos 3003 como valor por defecto.
 export const PORT = process.env.PORT || 3003;

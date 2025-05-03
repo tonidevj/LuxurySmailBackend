@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'; //encriptar las claves de los doctores o administra
 import jwt from 'jsonwebtoken'; //Con esto generaremos y verificaremos tokens JWT.
 import Staff from '../models/staff.js'; //importamos nuestro modelo de staff (Personal), aministradores y odontologos.
 import nodemailer from 'nodemailer'; // Con esto envaremos los emails.
+import { AppError } from '../utils/AppError.js'; //usaremos esto para capturar los errores
 import { 
     PAGE_URL,
     JWT_SECRET,
@@ -36,12 +37,12 @@ export const registerUser = async (data) => {
         !birthday || 
         !sex || 
         !password){
-            throw new Error('Todos los campos son obligatorios');
+            throw new AppError('Todos los campos son obligatorios', 400);
         }
 
         const emailExist = await Staff.findOne({ email }); 
         if(emailExist){ 
-            throw new Error('El correo ya se encuentra en uso');
+            throw new AppError('El correo ya se encuentra en uso', 400);
           } 
 
         const passwordHash = await bcrypt.hash(password, 10);
@@ -89,9 +90,12 @@ export const sendVerificationEmail = async (user) => {
         to: user.email,
         subject: 'verificacion de correo',
         html:`
-        <p> Hola ${user.name}, </p>
-        <p>Haz click en el enlace para verificar tu cuenta en Luxury Smail (válido 1h):</p>
-        <a href="${link}">${link}</a>
+        <p>Hola <strong>${user.name}</strong>,</p>
+        <p>Gracias por registrarte en <em>Luxury Smail</em>.</p>
+        <p>Haz clic en el enlace para verificar tu cuenta (válido por 1 hora):</p>
+        <p><a href="${link}">${link}</a></p>
+        <p>Si no solicitaste esta cuenta, ignora este correo.</p>
+        
       `
     });
     return token;
@@ -101,11 +105,16 @@ export const sendVerificationEmail = async (user) => {
 // Verificara el token, comprobara que el id coincida y marcara el campoverified en la base de Mongo
 
 export const verifyUser = async (id, token) => {
-    const payload = jwt.verify(token, JWT_SECRET);
-    if (payload.id !== id) {
-        throw new Error('Token de verificacion invalido');
+    try{
+        const payload = jwt.verify(token, JWT_SECRET);
+        if (payload.id !== id) {
+            throw new AppError('Token de verificacion invalido', 401);
+        }
+        await Staff.findByIdAndUpdate(id, {verified: true});
+        return { message: 'Cuenta Verificada exitosamente'}
+    } catch(error){
+        throw new AppError('Token invalido o expirado', 401);
     }
-    await Staff.findByIdAndUpdate(id, {verified: true});
 }
 
 // loginUser, busca usuario por email y compara claves
@@ -115,17 +124,17 @@ export const loginUser = async(email, password) =>{
     // 1.- primero buscamos el usuario, el usuario es el correo.
     const user = await Staff.findOne({ email });
     if(!user){
-        throw new Error('Email invalido');
+        throw new AppError('Email invalido', 400);
     }
     //  2.- validamos la clave.
     const valid = await bcrypt.compare(password, user.passwordHash);
     if(!valid){
-        throw new Error('Clave invalida');
+        throw new AppError('Clave invalida', 400);
     }
 
     // 3.- verificamos que el mail esta confirmado.
     if(!user.verified){
-        throw new Error('Debes verificar tu correo antes de iniciar sesion');
+        throw new AppError('Debes verificar tu correo antes de iniciar sesion', 403);
     }
 
     // 4.- generamos token de sesion
