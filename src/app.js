@@ -1,3 +1,4 @@
+import { errorHandler } from "./middlewares/errorhandler.js"; // importa el middleware
 import express from "express";
 import cors from "cors";
 import dontev from "dotenv";
@@ -17,6 +18,6 @@ app.use(cors({
 
 // Rutas Bakcend
 app.use('/api/users', userRoutes);
-
+app.use(errorHandler);
 
 export default app;

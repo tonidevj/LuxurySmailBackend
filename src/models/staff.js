@@ -24,7 +24,7 @@ const staffSchema = new mongoose.Schema({
     unique: true 
   },
   birthday: { 
-    type: Date, 
+    type: String, 
     required: true 
   },
   sex: { 

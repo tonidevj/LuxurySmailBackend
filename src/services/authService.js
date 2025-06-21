@@ -42,7 +42,7 @@ export const registerUser = async (data) => {
 
         const emailExist = await Staff.findOne({ email }); 
         if(emailExist){ 
-            throw new AppError('El correo ya se encuentra en uso', 400);
+            throw new AppError('El correo ya se encuentra en uso', 401);
           } 
 
         const passwordHash = await bcrypt.hash(password, 10);
