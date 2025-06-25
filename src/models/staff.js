@@ -21,7 +21,6 @@ const staffSchema = new mongoose.Schema({
   numberPhone: { 
     type: String, 
     required: true, 
-    unique: true 
   },
   birthday: { 
     type: String, 
@@ -34,8 +33,7 @@ const staffSchema = new mongoose.Schema({
   },
   specialty: { 
     type: String, 
-    required: true, 
-    unique: true 
+    required: true,
   },
   email: { 
     type: String, 

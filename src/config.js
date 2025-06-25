@@ -16,7 +16,7 @@ export const JWT_SECRET = process.env.JWT_SECRET;
 export const EMAIL_USER = process.env.EMAIL_USER;
 export const EMAIL_PASS = process.env.EMAIL_PASS;
 
-export const VERIF_TOKEN_EXPIRES = '1h';
+export const VERIF_TOKEN_EXPIRES = '1min';
 export const SESSION_TOKEN_EXPIRES = '3h';
 
 // Base del front para cors y generar enlaces
