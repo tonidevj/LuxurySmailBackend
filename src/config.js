@@ -11,6 +11,7 @@ export const PORT = process.env.PORT || 3003;
 
 // Clave para firmar y verificar JWT
 export const JWT_SECRET = process.env.JWT_SECRET;
+export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 // Credenciales para enviar correos
 export const EMAIL_USER = process.env.EMAIL_USER;

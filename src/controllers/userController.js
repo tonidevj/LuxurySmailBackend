@@ -67,7 +67,7 @@ export const login = async (request, response, next) => {
     try {
       const { email, password } = request.body;
       const { token, role, name } = await loginUser(email, password);
-  
+      
       response.status(200).json({
         message: 'Inicio de sesión exitoso',
         data: { token, role, name }

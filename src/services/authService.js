@@ -134,14 +134,14 @@ export const loginUser = async(email, password) =>{
     // 1.- primero buscamos el usuario, el usuario es el correo.
     const user = await Staff.findOne({ email });
     if(!user){
-        throw new AppError('Email invalido', 400);
+        throw new AppError('Datos invalidos', 400);
     }
     //  2.- validamos la clave.
     const valid = await bcrypt.compare(password, user.passwordHash);
     if(!valid){
-        throw new AppError('Clave invalida', 400);
+        throw new AppError('Datos invalidos', 400);
     }
-
+ 
     // 3.- verificamos que el mail esta confirmado.
     if(!user.verified){
         throw new AppError('Debes verificar tu correo antes de iniciar sesion', 403);
