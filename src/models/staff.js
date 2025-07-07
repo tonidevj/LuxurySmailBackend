@@ -54,13 +54,19 @@ const staffSchema = new mongoose.Schema({
   }});
 
 staffSchema.set('toJSON', {
-  transform: (document, returnObject) =>{
-    returnObject.id = returnObject._id.toString();
+  transform: (document, returnObject) => {
+    if (returnObject?._id) {
+      returnObject.id = returnObject._id.toString();
+    } else {
+      returnObject.id = undefined;
+    }
+
     delete returnObject._id;
     delete returnObject.__v;
     delete returnObject.passwordHash;
   }
 });
+
 
 const Staff = mongoose.model('Staff', staffSchema);
 

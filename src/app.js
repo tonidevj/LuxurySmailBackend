@@ -4,6 +4,8 @@ import cors from "cors";
 import dontev from "dotenv";
 import userRoutes from "../src/routes/user.routes.js";
 import authRoutes from "../src/routes/auth.js";
+import appointment from "../src/routes/appointment.routes.js"
+import adminRoutes from "../src/routes/admin.routes.js"
 import cookieParser from "cookie-parser";
 
 dontev.config(); //carga variables de entorno 
@@ -22,5 +24,8 @@ app.use(cors({
 // Rutas Bakcend
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/appointment', appointment);
+app.use('/api/admin', adminRoutes);
+
 app.use(errorHandler);
 export default app; 
