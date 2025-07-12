@@ -33,13 +33,24 @@ const appointmentSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["pendiente", "confirmada", "cancelada", "completada"],
-    default: "pendiente"
+    default: "pendiente",
+    required: false
   },
-  assignedDoctor: {
+  assignedDoctors: [
+    {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Staff", // Relación con el modelo Staff (doctores/administradores)
-    default: null
+    ref: "Staff", // Relación con el modelo Staff (doctores/administradores) 
   },
+],
+completedBy: [
+  {
+    name: { type: String },
+    ci: { type: String },
+    email: { type: String },
+    specialty: { type: String },
+  }
+],
+
   createdAt: {
     type: Date,
     default: Date.now

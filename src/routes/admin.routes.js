@@ -2,7 +2,8 @@ import { Router } from "express";
 import { getAllStaff,
          assignDoctorToAppointment,
          getAllAppointments,
-         updateAppointment, } from "../controllers/adminAppointmentsController.js";
+         updateAppointment,
+        deleteDoctorById, } from "../controllers/adminAppointmentsController.js";
 import { authenticateJWT } from "../middlewares/authenticateJWT.js";
 import { adminOnly, staffOnly } from "../middlewares/staffOnly.js"; 
 
@@ -18,6 +19,10 @@ router.get('/getDoctors', authenticateJWT, adminOnly ,getAllStaff);
 router.put('/:id/assign-doctor', authenticateJWT, adminOnly, assignDoctorToAppointment );
 
 // ruta para actualizar el estado de una cita
-router.put('/:id/updateStatus', authenticateJWT, staffOnly, updateAppointment);
+router.patch('/:id/updateStatus', authenticateJWT, staffOnly, updateAppointment);
+
+// Ruta para eliminar un doctor por ID
+// Esta ruta es para que el admin pueda eliminar un doctor o administrador
+router.delete('/deleteDoctor/:id', authenticateJWT, adminOnly, deleteDoctorById);
 
 export default router; 
