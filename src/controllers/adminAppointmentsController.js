@@ -88,8 +88,7 @@ export const assignDoctorToAppointment = async (request, response) => {
   
 // Actualizar estado de una cita (Admin y doctores); 
 // Al actualizar el estado de una cita, tambien se guarda el nombre del doctor que la completó 
-// Actualizar estado de una cita (Admin y doctores)
-// Actualizar estado de una cita (Admin y doctores)
+// Actualizar estado de una cita (Admin y doctores) 
 export const updateAppointment = async (request, response) => {
   const { id } = request.params;
   const updates = request.body;
@@ -142,7 +141,6 @@ export const updateAppointment = async (request, response) => {
 };
 
 
-
 // Eliminar un doctor (Admin)
 export const deleteDoctorById = async (request, response) => {
   const { id } = request.params;
@@ -174,5 +172,32 @@ export const deleteDoctorById = async (request, response) => {
   } catch (error) {
     console.error('Error al eliminar doctor:', error);
     response.status(500).json({ message: 'Error al eliminar doctor' });
+  }
+};
+
+export const uploadAppointmentPDF = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const filePath = `/uploads/pdf/${request.file.filename}`;
+
+    const appointment = await Appointment.findByIdAndUpdate(
+      id,
+      {
+        historialPDF: filePath,
+      },
+      { new: true }
+    );
+
+    if (!appointment) {
+      return response.status(404).json({ message: "Cita no encontrada" });
+    }
+
+    return response.status(200).json({
+      message: "PDF subido exitosamente",
+      historialPDF: appointment.historialPDF,
+    });
+  } catch (error) {
+    console.error("Error al subir el PDF:", error);
+    response.status(500).json({ message: "Error del servidor" });
   }
 };

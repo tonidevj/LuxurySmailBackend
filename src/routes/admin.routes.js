@@ -3,9 +3,11 @@ import { getAllStaff,
          assignDoctorToAppointment,
          getAllAppointments,
          updateAppointment,
-        deleteDoctorById, } from "../controllers/adminAppointmentsController.js";
+         deleteDoctorById,
+         uploadAppointmentPDF } from "../controllers/adminAppointmentsController.js";
 import { authenticateJWT } from "../middlewares/authenticateJWT.js";
 import { adminOnly, staffOnly } from "../middlewares/staffOnly.js"; 
+import { uploadPDF } from "../middlewares/upload.js";
 
 const router = Router();
 
@@ -24,5 +26,7 @@ router.patch('/:id/updateStatus', authenticateJWT, staffOnly, updateAppointment)
 // Ruta para eliminar un doctor por ID
 // Esta ruta es para que el admin pueda eliminar un doctor o administrador
 router.delete('/deleteDoctor/:id', authenticateJWT, adminOnly, deleteDoctorById);
+
+router.patch('/:id/upload-pdf', uploadPDF.single("pdf"), authenticateJWT, staffOnly, uploadAppointmentPDF);
 
 export default router; 
