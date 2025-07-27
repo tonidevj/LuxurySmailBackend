@@ -42,6 +42,12 @@ const appointmentSchema = new mongoose.Schema({
     ref: "Staff", // Relación con el modelo Staff (doctores/administradores) 
   },
 ],
+
+historialPDF: {
+  type: String, // o usa Buffer si prefieres almacenarlo directamente en MongoDB
+  default: null
+},
+
 completedBy: [
   {
     name: { type: String },
