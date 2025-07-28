@@ -4,9 +4,11 @@ import cors from "cors";
 import dontev from "dotenv";
 import userRoutes from "../src/routes/user.routes.js";
 import authRoutes from "../src/routes/auth.js";
-import appointment from "../src/routes/appointment.routes.js"
-import adminRoutes from "../src/routes/admin.routes.js"
+import appointment from "../src/routes/appointment.routes.js";
+import adminRoutes from "../src/routes/admin.routes.js";
+import pdfRoutes from "../src/routes/pdf.routes.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 dontev.config(); //carga variables de entorno 
 
@@ -20,6 +22,10 @@ app.use(cors({
     origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173', //acepta solo las peticiones de nuestro front
     credentials: true, // permitira el uso de cookies para las autenticaciones
 }));
+
+
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Rutas Bakcend
 app.use('/api/users', userRoutes);
