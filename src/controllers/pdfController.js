@@ -13,6 +13,16 @@ export const generateMedicalPDF = async (request, response) => {
       return response.status(404).json({ message: "Cita no encontrada" });
     }
 
+    // Crea carpeta si no existe
+    const uploadDir = path.join("uploads", "pdf");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    // Nombre de archivo
+    const fileName = `pdf-${Date.now()}-${Math.floor(Math.random() * 1000000)}.pdf`;
+    const filePath = path.join(uploadDir, fileName);
+
     // Generar PDF
     const doc = new PDFDocument();
     const writeStream = fs.createWriteStream(filePath);

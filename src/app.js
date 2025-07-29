@@ -28,6 +28,7 @@ const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Rutas Bakcend
+app.use("/api/pdf", pdfRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/appointment', appointment);
